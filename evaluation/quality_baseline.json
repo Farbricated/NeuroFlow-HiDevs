@@ -1,0 +1,12 @@
+{
+  "measured_at": "Run evaluation scripts to populate",
+  "retrieval_hit_rate_at_10": null,
+  "retrieval_mrr_at_10": null,
+  "faithfulness_avg": null,
+  "answer_relevance_avg": null,
+  "context_precision_avg": null,
+  "context_recall_avg": null,
+  "overall_eval_score_avg": null,
+  "p95_query_latency_ms": null,
+  "note": "Run: python evaluation/retrieval_eval.py && python evaluation/generation_eval.py"
+}

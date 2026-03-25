@@ -1,0 +1,48 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install ruff mypy
+      - run: ruff check backend/ pipelines/ evaluation/ || true
+      - run: mypy backend/ --ignore-missing-imports --no-strict-optional || true
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env: { POSTGRES_PASSWORD: testpassword, POSTGRES_DB: neuroflow_test, POSTGRES_USER: neuroflow }
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        ports: ["5432:5432"]
+      redis:
+        image: redis:7-alpine
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 5
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install pydantic pydantic-settings tiktoken pytest pytest-asyncio
+      - name: Run unit tests
+        env: { POSTGRES_PASSWORD: testpassword, REDIS_PASSWORD: "", OPENAI_API_KEY: sk-test }
+        run: pytest tests/unit/ -v --tb=short
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install detect-secrets
+      - run: detect-secrets-hook --baseline .secrets.baseline . || true

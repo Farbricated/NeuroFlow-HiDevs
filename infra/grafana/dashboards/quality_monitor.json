@@ -1,0 +1,21 @@
+{
+  "title": "NeuroFlow Quality Monitor",
+  "uid": "neuroflow-quality",
+  "panels": [
+    {
+      "title": "24h Avg Faithfulness by Pipeline",
+      "type": "timeseries",
+      "targets": [{"expr": "neuroflow_eval_faithfulness", "legendFormat": "{{pipeline_id}}"}]
+    },
+    {
+      "title": "Overall Score Trend (7 days)",
+      "type": "timeseries",
+      "targets": [{"expr": "neuroflow_eval_overall", "legendFormat": "{{pipeline_id}}"}]
+    },
+    {
+      "title": "Documents Ingested per Day",
+      "type": "bar",
+      "targets": [{"expr": "increase(neuroflow_ingestion_docs_total[24h])", "legendFormat": "{{source_type}}"}]
+    }
+  ]
+}

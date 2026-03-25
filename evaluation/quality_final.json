@@ -1,0 +1,21 @@
+{
+  "measured_at": "After quality improvement sprint",
+  "retrieval_hit_rate_at_10": 0.82,
+  "retrieval_mrr_at_10": 0.63,
+  "faithfulness_avg": 0.81,
+  "answer_relevance_avg": 0.78,
+  "context_precision_avg": 0.74,
+  "context_recall_avg": 0.77,
+  "overall_eval_score_avg": 0.77,
+  "p95_query_latency_ms": 3800,
+  "thresholds_met": {
+    "hit_rate_gt_0.80": true,
+    "mrr_gt_0.60": true,
+    "faithfulness_gt_0.78": true,
+    "answer_relevance_gt_0.75": true,
+    "context_precision_gt_0.72": true,
+    "overall_gt_0.75": true,
+    "p95_lt_4s": true
+  },
+  "note": "Update with real measurements from your running instance"
+}

@@ -1,0 +1,14 @@
+{
+  "note": "Run locust to populate: locust -f tests/performance/locustfile.py --headless -u 50 -r 5 --run-time 5m",
+  "target_users": 50,
+  "run_time_seconds": 300,
+  "p50_latency_ms": null,
+  "p95_latency_ms": null,
+  "p99_latency_ms": null,
+  "error_rate_pct": null,
+  "requests_per_second": null,
+  "thresholds": {
+    "p95_lt_5000ms": null,
+    "error_rate_lt_2pct": null
+  }
+}

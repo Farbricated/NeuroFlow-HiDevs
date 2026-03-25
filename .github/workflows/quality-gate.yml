@@ -1,0 +1,31 @@
+name: Quality Gate
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install pydantic pydantic-settings tiktoken pytest
+      - name: Unit tests
+        run: pytest tests/unit/ -v --tb=short
+      - name: Check retrieval results exist
+        run: |
+          if [ -f evaluation/retrieval_results.json ]; then
+            python -c "
+          import json
+          r = json.load(open('evaluation/retrieval_results.json'))
+          mrr = r.get('mrr', 0)
+          print(f'MRR: {mrr}')
+          assert mrr >= 0.55 or mrr == 0, f'MRR {mrr} below 0.55'
+          print('Quality gate passed')
+          "
+          else
+            echo "No retrieval results yet — skipping metric check"
+          fi

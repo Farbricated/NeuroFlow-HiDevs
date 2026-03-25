@@ -1,0 +1,36 @@
+{
+  "title": "NeuroFlow System Overview",
+  "uid": "neuroflow-system",
+  "panels": [
+    {
+      "title": "Queries per Minute",
+      "type": "graph",
+      "targets": [{"expr": "rate(neuroflow_queries_total[1m]) * 60", "legendFormat": "{{status}}"}]
+    },
+    {
+      "title": "P95 Retrieval Latency",
+      "type": "stat",
+      "targets": [{"expr": "histogram_quantile(0.95, rate(neuroflow_retrieval_latency_seconds_bucket[5m]))", "legendFormat": "P95"}]
+    },
+    {
+      "title": "P95 Generation Latency",
+      "type": "stat",
+      "targets": [{"expr": "histogram_quantile(0.95, rate(neuroflow_generation_latency_seconds_bucket[5m]))", "legendFormat": "P95"}]
+    },
+    {
+      "title": "LLM Cost per Hour",
+      "type": "stat",
+      "targets": [{"expr": "rate(neuroflow_llm_cost_usd_sum[1h]) * 3600", "legendFormat": "$/hr"}]
+    },
+    {
+      "title": "Queue Depth",
+      "type": "gauge",
+      "targets": [{"expr": "neuroflow_queue_depth"}]
+    },
+    {
+      "title": "Circuit Breakers Open",
+      "type": "stat",
+      "targets": [{"expr": "neuroflow_circuit_breakers_open"}]
+    }
+  ]
+}
