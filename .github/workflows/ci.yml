@@ -35,7 +35,7 @@ jobs:
       - run: pip install pydantic pydantic-settings tiktoken pytest pytest-asyncio
       - name: Run unit tests
         env: { POSTGRES_PASSWORD: testpassword, REDIS_PASSWORD: "", OPENAI_API_KEY: sk-test }
-        run: pytest tests/unit/ -v --tb=short
+        run: PYTHONPATH=. pytest tests/unit/ -v --tb=short
 
   security:
     runs-on: ubuntu-latest

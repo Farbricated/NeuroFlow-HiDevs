@@ -19,6 +19,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set lowercase repository name
+        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build and push API image
         uses: docker/build-push-action@v5
         with:
@@ -26,13 +30,14 @@ jobs:
           file: backend/Dockerfile.prod
           target: runtime
           push: true
-          tags: ghcr.io/${{ github.repository }}/api:${{ github.sha }},ghcr.io/${{ github.repository }}/api:latest
+          tags: ghcr.io/${{ env.REPO_LC }}/api:${{ github.sha }},ghcr.io/${{ env.REPO_LC }}/api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
       - name: Trivy security scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository }}/api:${{ github.sha }}
+          image-ref: ghcr.io/${{ env.REPO_LC }}/api:${{ github.sha }}
           exit-code: "1"
           severity: CRITICAL
         continue-on-error: true

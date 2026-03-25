@@ -14,7 +14,7 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install pydantic pydantic-settings tiktoken pytest
       - name: Unit tests
-        run: pytest tests/unit/ -v --tb=short
+        run: PYTHONPATH=. pytest tests/unit/ -v --tb=short
       - name: Check retrieval results exist
         run: |
           if [ -f evaluation/retrieval_results.json ]; then
