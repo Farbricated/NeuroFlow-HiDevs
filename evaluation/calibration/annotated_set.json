@@ -1,0 +1,8 @@
+[
+  {
+    "query": "What is retrieval augmented generation?",
+    "answer": "Retrieval Augmented Generation (RAG) is a technique that combines information retrieval with text generation. [Source 1]",
+    "context": "RAG is a method that retrieves relevant documents from a knowledge base and uses them as context for a language model to generate answers.",
+    "human_faithfulness": 0.95
+  }
+]

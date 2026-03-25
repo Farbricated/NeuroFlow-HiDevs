@@ -1,0 +1,5 @@
+{
+  "pearson_correlation": null,
+  "note": "Run evaluation/calibration/run_calibration.py to populate.",
+  "threshold": 0.85
+}
