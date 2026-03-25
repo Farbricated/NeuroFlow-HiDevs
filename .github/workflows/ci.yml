@@ -32,7 +32,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
-
       - name: Check for null bytes in Python files
         run: |
           python -c "
@@ -43,10 +42,11 @@ jobs:
               print('Files with null bytes (likely saved as UTF-16):')
               for f in bad:
                   print(f'  {f}')
+              print('\n[✅ LOCAL FIX] To resolve this, run this command in your repository root:')
+              print('python -c \"import pathlib; [p.write_bytes(p.read_bytes().decode(\\'utf-16\\').encode(\\'utf-8\\')) for p in pathlib.Path(\\'\\.\\').rglob(\\'*.py\\') if b\\'\\\\x00\\' in p.read_bytes()]\"')
               sys.exit(1)
           print(f'Checked {len(list(pathlib.Path(\".\").rglob(\"*.py\")))} files — no null bytes found')
           "
-
       - run: pip install pydantic pydantic-settings tiktoken pytest pytest-asyncio
       - name: Run unit tests
         env: { POSTGRES_PASSWORD: testpassword, REDIS_PASSWORD: "", OPENAI_API_KEY: sk-test }
