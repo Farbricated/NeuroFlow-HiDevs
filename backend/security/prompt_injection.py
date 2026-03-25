@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 INJECTION_PATTERNS = [
-    re.compile(r"ignore (all |previous |the |your )?instructions", re.IGNORECASE),
+    re.compile(r"ignore (all |previous |the |your )*instructions", re.IGNORECASE),
     re.compile(r"you are now", re.IGNORECASE),
     re.compile(r"new (system |)prompt", re.IGNORECASE),
     re.compile(r"disregard (the |all |previous )", re.IGNORECASE),
@@ -28,8 +28,8 @@ def scan_for_injection(text: str) -> dict | None:
 
 async def classify_query_injection(query: str) -> bool:
     """Layer 2: LLM classification for user queries."""
-    from backend.providers.base import ChatMessage, RoutingCriteria  # noqa: PLC0415
-    from backend.providers.client import get_client  # noqa: PLC0415
+    from backend.providers.base import ChatMessage, RoutingCriteria  # type: ignore # noqa: PLC0415
+    from backend.providers.client import get_client  # type: ignore # noqa: PLC0415
 
     client = get_client()
     prompt = (
